@@ -1,4 +1,6 @@
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
@@ -29,6 +31,22 @@ class Scrapper:
         self.CAR_PRICE = '/html/body/section/div[2]/div/div[4]/a[1]/div[2]/div[2]/div/div[2]/div/span[2]'
         self.CAR_CARD = '/html/body/section/div[2]/div/div[4]/a[1]'
         self.CAR_COLUMN = '/html/body/section/div[2]'
+
+        self.navigate_to_country(country = country)
+
+    def navigate_to_country(self, country):
+        country = country.capitalize()
+        if country == "Germany":
+            pass
+        else:
+            element = self.driver.find_element(By.XPATH, self.COUNTRY_DROPDOWN_INPUT)
+            element.click()
+            li_elem = self.driver.find_element(By.XPATH, self.COUNTRIES).find_elements(By.TAG_NAME, 'li')
+            for item in li_elem:
+                if item.text.split('\n')[0] == country:
+                    item.click()
+                    break
+        self.driver.find_element(By.XPATH, self.SEARCH_BTN).send_keys(Keys.RETURN)
 
 
 if __name__ == '__main__':
