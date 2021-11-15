@@ -1,3 +1,4 @@
+import xlsxwriter
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -59,6 +60,14 @@ class Scrapper:
             price_stat = info.find("div", {"class": "price-stat"}).get_text(strip=True)
             price_info = info.find("div", {"class": "price-info"}).get_text(strip=True)
             self.car_details.append([location, mileage, description, price_stat, price_info])
+        self.write_data(self.car_details)
+
+    def write_data(self, details):
+        workbook = xlsxwriter.Workbook('car_details.xlsx')
+        worksheet = workbook.add_worksheet()
+        for row_num, it in enumerate(details):
+            worksheet.write_row(row_num, 0, it)
+        workbook.close()
 
 
 if __name__ == '__main__':
