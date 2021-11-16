@@ -1,4 +1,5 @@
 import constants
+import math
 import xlsxwriter
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -38,6 +39,9 @@ class Scrapper:
                     break
         self.driver.find_element(By.XPATH, constants.SEARCH_BTN).send_keys(Keys.RETURN)
         self.get_car_details()
+
+    def find_total_navigations(self):
+        return math.floor(int(self.driver.find_element(By.XPATH, constants.RESULT_NUM).text.split(' ')[2].replace(',', '')) / 15)
 
     def get_car_details(self):
         soup = BeautifulSoup(self.driver.page_source, "html.parser")
